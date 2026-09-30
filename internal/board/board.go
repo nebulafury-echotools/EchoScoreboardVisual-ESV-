@@ -1,16 +1,23 @@
 package board
 
 import (
-	"echo-scoreboard-visual/internal/echo"
-	"echo-scoreboard-visual/internal/spark"
+	"fmt"
 	"strings"
+
+	"echo-scoreboard-visual/internal/echo"
 )
 
 type Board struct {
 	WaitingForMatch bool        `json:"waitingForMatch"`
 	Message         string      `json:"message,omitempty"`
+	MVPName         string      `json:"mvpName,omitempty"`
+	MVPScore        float64     `json:"mvpScore,omitempty"`
+	MVPAvailable    bool        `json:"mvpAvailable"`
+	MVPComplete     bool        `json:"mvpComplete"`
 	GameStatus      string      `json:"gameStatus,omitempty"`
 	GameOver        bool        `json:"gameOver,omitempty"`
+	RoundOver       bool        `json:"roundOver,omitempty"`
+	SnapshotID      string      `json:"snapshotId,omitempty"`
 	TimeLeft        string      `json:"timeLeft,omitempty"`
 	Score           Score       `json:"score,omitempty"`
 	RoundScores     RoundScores `json:"roundScores,omitempty"`
@@ -36,15 +43,18 @@ type Team struct {
 }
 
 type Player struct {
-	Name     string             `json:"name,omitempty"`
-	Username string             `json:"username,omitempty"`
-	Team     string             `json:"team,omitempty"`
-	Ping     int                `json:"ping,omitempty"`
-	MVP      float64            `json:"mvp,omitempty"`
-	Stats    map[string]float64 `json:"stats,omitempty"`
+	Name         string             `json:"name,omitempty"`
+	Username     string             `json:"username,omitempty"`
+	Team         string             `json:"team,omitempty"`
+	Ping         int                `json:"ping,omitempty"`
+	MVPScore     float64            `json:"mvpScore,omitempty"`
+	MVPAvailable bool               `json:"mvpAvailable"`
+	MVPComplete  bool               `json:"mvpComplete"`
+	IsMVP        bool               `json:"isMVP,omitempty"`
+	Stats        map[string]float64 `json:"stats,omitempty"`
 }
 
-func Build(session echo.Session, stats spark.Stats) Board {
+func Build(session echo.Session) Board {
 	if len(session.Teams) == 0 && session.BluePoints == 0 && session.OrangePoints == 0 && session.ClockDisplay == "" && session.GameState == "" {
 		return Board{WaitingForMatch: true, Message: "waiting for match"}
 	}
@@ -66,11 +76,20 @@ func Build(session echo.Session, stats spark.Stats) Board {
 		board.GameOver = true
 		board.Message = "Game Over"
 	}
+	board.RoundOver = board.GameOver || strings.EqualFold(board.GameStatus, "round_over")
+	if board.RoundOver {
+		board.SnapshotID = strings.Join([]string{
+			session.SessionID,
+			fmt.Sprintf("%d-%d", board.Score.Blue, board.Score.Orange),
+			fmt.Sprintf("%d-%d", board.RoundScores.Blue, board.RoundScores.Orange),
+		}, "-")
+	}
 
 	if len(session.Teams) == 0 {
 		for _, player := range session.Players {
-			board.Players = append(board.Players, normalizePlayer(player, stats))
+			board.Players = append(board.Players, normalizePlayer(player, session.MatchType))
 		}
+		setMVP(&board)
 		return board
 	}
 
@@ -90,7 +109,7 @@ func Build(session echo.Session, stats spark.Stats) Board {
 			players = players[:4]
 		}
 		for _, player := range players {
-			normalized := normalizePlayer(player, stats)
+			normalized := normalizePlayer(player, session.MatchType)
 			normalized.Team = color
 			boardTeam.Players = append(boardTeam.Players, normalized)
 			board.Players = append(board.Players, normalized)
@@ -98,52 +117,91 @@ func Build(session echo.Session, stats spark.Stats) Board {
 		board.Teams = append(board.Teams, boardTeam)
 	}
 
+	setMVP(&board)
 	return board
 }
 
-func normalizePlayer(player echo.Player, stats spark.Stats) Player {
+func normalizePlayer(player echo.Player, matchType string) Player {
+	mvpScore, mvpComplete := 0.0, false
+	mvpAvailable := strings.EqualFold(matchType, "Echo_Arena")
+	if mvpAvailable {
+		mvpScore, mvpComplete = echoArenaMVPScore(player.Stats)
+	}
+
 	normalized := Player{
-		Name:     player.Name,
-		Username: player.Username,
-		Team:     player.Team,
-		Ping:     player.Ping,
-		MVP:      player.MVP,
-		Stats:    map[string]float64{},
+		Name:         player.Name,
+		Username:     player.Username,
+		Team:         player.Team,
+		Ping:         player.Ping,
+		MVPScore:     mvpScore,
+		MVPAvailable: mvpAvailable,
+		MVPComplete:  mvpComplete,
+		Stats:        map[string]float64{},
 	}
-	if player.Stats != nil {
-		for k, v := range player.Stats {
-			normalized.Stats[k] = v
-		}
+	for key, value := range player.Stats {
+		normalized.Stats[key] = value
 	}
-	if _, exists := normalized.Stats["points"]; !exists {
-		normalized.Stats["points"] = 0
-	}
-	if _, exists := normalized.Stats["assists"]; !exists {
-		normalized.Stats["assists"] = 0
-	}
-	if _, exists := normalized.Stats["saves"]; !exists {
-		normalized.Stats["saves"] = 0
-	}
-	if _, exists := normalized.Stats["stuns"]; !exists {
-		normalized.Stats["stuns"] = 0
-	}
-	if _, exists := normalized.Stats["ping"]; !exists {
-		normalized.Stats["ping"] = float64(player.Ping)
-	}
-	if normalized.MVP == 0 {
-		if stat, ok := stats.Players[player.Username]; ok {
-			normalized.MVP = stat.MVPPercentage
-		}
-		if normalized.MVP == 0 {
-			if stat, ok := stats.Players[player.Name]; ok {
-				normalized.MVP = stat.MVPPercentage
+	for _, key := range []string{"points", "assists", "saves", "stuns", "ping"} {
+		if _, exists := normalized.Stats[key]; !exists {
+			if key == "ping" {
+				normalized.Stats[key] = float64(player.Ping)
+			} else {
+				normalized.Stats[key] = 0
 			}
 		}
 	}
-	if normalized.MVP > 0 || normalized.Stats["mvp"] == 0 {
-		normalized.Stats["mvp"] = normalized.MVP
-	}
 	return normalized
+}
+
+func setMVP(board *Board) {
+	if len(board.Players) == 0 {
+		return
+	}
+	board.MVPAvailable = true
+	board.MVPComplete = true
+	board.MVPScore = board.Players[0].MVPScore
+	for index := range board.Players {
+		player := &board.Players[index]
+		if !player.MVPAvailable {
+			board.MVPAvailable = false
+		}
+		if !player.MVPComplete {
+			board.MVPComplete = false
+		}
+		if player.MVPScore > board.MVPScore {
+			board.MVPScore = player.MVPScore
+		}
+	}
+	if !board.MVPAvailable {
+		board.MVPComplete = false
+		return
+	}
+
+	winners := make([]string, 0, 1)
+	for index := range board.Players {
+		player := &board.Players[index]
+		player.IsMVP = player.MVPScore == board.MVPScore
+		if player.IsMVP {
+			name := player.Username
+			if name == "" {
+				name = player.Name
+			}
+			winners = append(winners, name)
+		}
+	}
+	board.MVPName = strings.Join(winners, ", ")
+
+	for teamIndex := range board.Teams {
+		for playerIndex := range board.Teams[teamIndex].Players {
+			teamPlayer := &board.Teams[teamIndex].Players[playerIndex]
+			for _, player := range board.Players {
+				if player.Name == teamPlayer.Name && player.Team == teamPlayer.Team {
+					teamPlayer.IsMVP = player.IsMVP
+					break
+				}
+			}
+		}
+	}
 }
 
 func normalizeClock(raw string) string {

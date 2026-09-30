@@ -1,0 +1,20 @@
+# Local Windows build output
+/builds/
+/scoreboard.exe
+*.exe
+
+# Local screenshots and capture output
+/screenshots/
+/captures/
+
+# Machine-captured API samples can contain player and session identifiers
+/testdata/*.json
+
+# Go test and profiling artifacts
+*.test
+*.out
+*.prof
+
+# Windows Explorer metadata
+Thumbs.db
+desktop.ini

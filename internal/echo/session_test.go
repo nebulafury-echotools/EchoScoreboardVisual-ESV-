@@ -1,17 +1,34 @@
 package echo
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 )
 
-func TestFetchParsesCapturedEchoSession(t *testing.T) {
-	if _, err := os.Stat("../../testdata/echo_session.json"); err != nil {
+func TestFetchUsesConfiguredEndpoint(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte(`{"match_type":"Echo_Arena","blue_points":7}`))
+	}))
+	defer server.Close()
+
+	session, err := NewClient(server.URL).Fetch()
+	if err != nil {
+		t.Fatalf("expected endpoint response: %v", err)
+	}
+	if session.BluePoints != 7 {
+		t.Fatalf("expected live score 7, got %d", session.BluePoints)
+	}
+}
+
+func TestParseCapturedEchoSession(t *testing.T) {
+	data, err := os.ReadFile("../../testdata/echo_session.json")
+	if err != nil {
 		t.Skip("live Echo fixture not present")
 	}
 
-	client := NewClient("http://127.0.0.1:1")
-	session, err := client.Fetch()
+	session, err := ParseSession(data)
 	if err != nil {
 		t.Fatalf("expected captured Echo session fixture to decode: %v", err)
 	}

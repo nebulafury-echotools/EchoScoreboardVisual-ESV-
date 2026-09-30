@@ -1,26 +1,27 @@
 # Echo Scoreboard Visualizer
 
-A small Windows scoreboard app for Echo VR. It serves a browser page at `http://localhost:8080` with the Blue and Orange teams, match score, round scores, clock, and up to four player slots per team.
+A standalone Windows scoreboard for Echo VR. Launch the executable to open its desktop window; it does not host a webpage or listen on a localhost port. The embedded UI shows Blue and Orange teams, match score, rounds won, timer, and up to four players per team.
 
-The player panels show points (PTS), assists (AST), saves (SVS), stuns (STN), ping, and MVP. The first five values come from fields in the Echo session response. MVP is optional and may show `—` until a verified Spark data source is available. At zero time or when the match status indicates the post-game state, the center panel displays **Game Over**.
+Player panels show PTS, AST, SVS, STN, PING, and the calculated MVP score. Individual award titles are not displayed. For `Echo_Arena`, the MVP score is the sum of each award stat multiplied by its configured multiplier from Echo's `r14/multiplayer/player_rewards.json`. The highest score is marked MVP. A `~` prefix means one or more required stats were absent from `/session`, so the rating is partial. Outside `Echo_Arena`, MVP displays as `N/A`.
+
+At round or match end, the app saves one PNG of its scoreboard window for that end event to `%LOCALAPPDATA%\EchoScoreboardVisual\screenshots`.
 
 ## Requirements
 
-- Windows
+- Windows with the Microsoft Edge WebView2 Runtime installed
 - Go 1.27.1 or newer to run from source or build the executable
-- Echo VR running for its local session API (`http://127.0.0.1:6721/session`)
-- A browser, or OBS if using the page as a Browser Source
+- Echo VR with its local session API enabled at `http://127.0.0.1:6721/session`
 
 ## Run From Source
 
-Open PowerShell or Command Prompt in this project folder:
+From PowerShell or Command Prompt in this project folder:
 
 ```powershell
 go test ./...
 go run ./cmd/scoreboard
 ```
 
-Then open `http://localhost:8080` in a browser. Keep the terminal running while using the scoreboard; press `Ctrl+C` to stop it. The page refreshes its board data every five seconds. If Echo data is unavailable, it reports that it is waiting for a match.
+The scoreboard opens in a desktop window and refreshes from Echo every five seconds. Echo must be in a match or spectating; otherwise the window says "Waiting for match." Close the window to exit.
 
 ## Build the Windows Executable
 
@@ -30,28 +31,24 @@ Run either build script from the project folder:
 .\build-scoreboard.ps1
 ```
 
-Or, from Command Prompt:
+Or from Command Prompt:
 
 ```bat
 build-scoreboard.bat
 ```
 
-Both scripts create `builds\scoreboard.exe`. To launch it, run it from the project folder:
+Both scripts create `builds\scoreboard.exe`. Launch it with:
 
 ```powershell
 .\builds\scoreboard.exe
 ```
 
-The executable reads `web\index.html` at startup, so keep the `web` folder alongside the project and launch the executable with this project as its working directory.
+The UI is embedded in the executable. The WebView2 Runtime is a Windows prerequisite and is not bundled into the EXE.
 
-## Use in OBS
+## OBS
 
-1. Start the scoreboard app.
-2. Add a **Browser** source to the scene.
-3. Set its URL to `http://localhost:8080` and choose the desired width and height.
+Use a **Window Capture** source and select **Echo Scoreboard**. No Browser Source or localhost URL is needed.
 
-## Current Data Limitations
+## MVP Data Notes
 
-- The Echo client currently loads `testdata\echo_session.json` whenever it finds that file, before trying the live Echo endpoint. Since the sample is included in this repository, the current app will display the captured sample rather than live match data until fixture loading is limited to tests or otherwise disabled for normal runs.
-- The app attempts an optional request to Spark at `http://localhost:6724/api`, but Spark's actual response has not been verified with a saved sample. MVP percentages may therefore be blank or unavailable.
-- The server is intended for local use. Do not expose port 8080 to an untrusted network.
+The saved Echo session fixture contains only a subset of the `echo_arena` reward stats, so fixture-based ratings are partial. At runtime, the app polls Echo directly and does not query Spark. Spark's previously probed `/` and `/api` routes returned HTTP 404; no Spark endpoint is used for MVP.

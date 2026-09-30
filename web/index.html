@@ -77,6 +77,10 @@
         gap: 8px;
         min-height: 150px;
       }
+      .player.is-mvp {
+        border-color: #e9d27a;
+        box-shadow: inset 0 0 0 1px rgba(233,210,122,0.35);
+      }
       .player-name {
         min-height: 24px;
         display: flex;
@@ -89,6 +93,14 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      .mvp-marker {
+        align-self: center;
+        color: #f3df8d;
+        font-size: 9px;
+        font-weight: 800;
+        line-height: 1;
+        text-transform: uppercase;
       }
       .stats {
         display: grid;
@@ -117,65 +129,66 @@
       }
       .center-panel {
         display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        gap: 18px;
-        padding: 6px 10px;
-        min-height: 120px;
-        background: rgba(16, 26, 43, 0.96);
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px;
+        min-height: 104px;
+        background: linear-gradient(90deg, rgba(47,125,246,0.32), rgba(16,26,43,0.96) 50%, rgba(245,158,11,0.32));
         border: 1px solid var(--line);
         border-radius: 12px;
       }
-      .score-block {
+      .score-pill {
+        min-width: 0;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 12px;
-        font-weight: 900;
-      }
-      .score-block .side {
-        min-width: 82px;
+        gap: 5px;
+        padding: 8px 4px;
         text-align: center;
-        font-size: clamp(22px, 3.2vw, 52px);
+        background: rgba(11, 18, 32, 0.9);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 999px;
+      }
+      .pill-label {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
         line-height: 1;
+        text-transform: uppercase;
       }
-      .score-block .side.blue { color: var(--blue); }
-      .score-block .side.orange { color: var(--orange); }
-      .score-separator {
-        font-size: clamp(24px, 3vw, 40px);
-        color: var(--muted);
-      }
-      .mid-box {
-        text-align: center;
-      }
-      .time {
-        font-size: clamp(18px, 2.2vw, 32px);
+      .pill-value {
+        font-size: 25px;
         font-weight: 900;
-        letter-spacing: 0.04em;
-        color: var(--score);
+        line-height: 1;
+        white-space: nowrap;
       }
-      .rounds {
-        margin-top: 6px;
+      .score-pill.blue .pill-value { color: var(--blue); }
+      .score-pill.orange .pill-value { color: var(--orange); }
+      .score-pill.timer .pill-value { font-size: 21px; }
+      .pill-status {
         color: var(--muted);
-        font-size: clamp(12px, 1vw, 18px);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-size: 9px;
+        line-height: 1;
+        white-space: nowrap;
       }
-      .status {
+      .center-message {
+        grid-column: 1 / -1;
+        align-self: center;
         text-align: center;
-        color: var(--muted);
-        font-size: clamp(11px, 1vw, 14px);
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-      }
-      .status.game-over {
-        color: #ffd7d7;
+        font-size: 18px;
         font-weight: 800;
       }
       @media (max-width: 760px) {
         .players { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .center-panel { grid-template-columns: 1fr; }
-        .score-block { justify-content: center; }
+        .center-panel { gap: 4px; padding: 6px; min-height: 76px; }
+        .score-pill { gap: 3px; padding: 6px 2px; }
+        .pill-label { font-size: 7px; }
+        .pill-value { font-size: 16px; }
+        .score-pill.timer .pill-value { font-size: 13px; }
+        .pill-status { font-size: 7px; }
+        .center-message { font-size: 14px; }
       }
     </style>
   </head>
@@ -193,10 +206,10 @@
         return Math.round(num);
       }
 
-      function formatMvp(value) {
+      function formatMvpScore(value, available) {
         const num = Number(value ?? 0);
-        if (!Number.isFinite(num) || num <= 0) return '—';
-        return Math.round(num) + '%';
+        if (!available || !Number.isFinite(num)) return 'N/A';
+        return (num / 10).toFixed(1);
       }
 
       function shortName(name) {
@@ -212,11 +225,12 @@
         const s = formatStatNumber(stats.saves);
         const t = formatStatNumber(stats.stuns);
         const ping = formatStatNumber(stats.ping ?? player.ping ?? 0);
-        const mvp = formatMvp(stats.mvp ?? player.mvp);
+        const mvp = formatMvpScore(player.mvpScore, player.mvpAvailable);
 
         return `
-          <div class="player">
+          <div class="player ${player.isMVP ? 'is-mvp' : ''}">
             <div class="player-name">${shortName(player.name || player.username || 'Player')}</div>
+            ${player.isMVP ? '<div class="mvp-marker">MVP</div>' : ''}
             <div class="stats">
               <div class="stat"><span class="stat-label">PTS</span><span class="stat-value">${p}</span></div>
               <div class="stat"><span class="stat-label">AST</span><span class="stat-value">${a}</span></div>
@@ -231,7 +245,7 @@
 
       function renderTeam(team, side) {
         const players = Array.isArray(team.players) ? team.players.slice(0, 4) : [];
-        const pad = Array.from({ length: Math.max(0, 4 - players.length) }, () => '<div class="player"><div class="player-name">—</div><div class="stats"><div class="stat"><span class="stat-label">PTS</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">AST</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">SVS</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">STN</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">PING</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">MVP</span><span class="stat-value">—</span></div></div></div>');
+        const pad = Array.from({ length: Math.max(0, 4 - players.length) }, () => '<div class="player"><div class="player-name">—</div><div class="stats"><div class="stat"><span class="stat-label">PTS</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">AST</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">SVS</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">STN</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">PING</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">MVP</span><span class="stat-value">N/A</span></div></div></div>');
 
         return `
           <div class="team-header">
@@ -252,31 +266,43 @@
         const roundOrange = Number(board.roundScores?.orange ?? 0);
         const isGameOver = !!board.gameOver || time === '00:00.00' || time === '00:00.000' || (board.gameStatus || '').toLowerCase().includes('post');
         const timeText = isGameOver ? 'Game Over' : time;
-        const statusText = isGameOver ? 'Game Over' : (board.staleSince ? `stale since ${board.staleSince}` : 'live');
+        const statusText = isGameOver ? 'Game Over' : (board.roundOver ? 'Round Over' : (board.staleSince ? `stale ${board.staleSince}` : 'live'));
 
         return `
-          <div class="score-block">
-            <div class="side blue">${scoreBlue}</div>
-            <div class="score-separator">:</div>
-            <div class="side orange">${scoreOrange}</div>
+          <div class="score-pill blue">
+            <span class="pill-label">Blue</span>
+            <span class="pill-value">${scoreBlue}</span>
           </div>
-          <div class="mid-box">
-            <div class="time">${timeText}</div>
-            <div class="rounds">Rounds ${roundBlue} - ${roundOrange}</div>
+          <div class="score-pill blue">
+            <span class="pill-label">Blue Rounds</span>
+            <span class="pill-value">${roundBlue}</span>
           </div>
-          <div class="status ${isGameOver ? 'game-over' : ''}">${statusText}</div>
+          <div class="score-pill timer">
+            <span class="pill-label">Time</span>
+            <span class="pill-value">${timeText}</span>
+            <span class="pill-status">${statusText}</span>
+          </div>
+          <div class="score-pill orange">
+            <span class="pill-label">Orange Rounds</span>
+            <span class="pill-value">${roundOrange}</span>
+          </div>
+          <div class="score-pill orange">
+            <span class="pill-label">Orange</span>
+            <span class="pill-value">${scoreOrange}</span>
+          </div>
         `;
       }
 
+      let lastSnapshotId = '';
+
       async function loadBoard() {
         try {
-          const response = await fetch('/board.json', { cache: 'no-store' });
-          const board = await response.json();
+          const board = await window.getBoard();
 
           if (board.waitingForMatch) {
             document.getElementById('blue-team').innerHTML = '<div class="team-header"><span>Blue</span><span class="tag">Waiting</span></div>';
             document.getElementById('orange-team').innerHTML = '<div class="team-header"><span>Orange</span><span class="tag">Waiting</span></div>';
-            document.getElementById('center').innerHTML = '<div class="mid-box"><div class="time">Waiting for match</div></div>';
+            document.getElementById('center').innerHTML = '<div class="center-message">Waiting for match</div>';
             return;
           }
 
@@ -287,8 +313,18 @@
           document.getElementById('blue-team').innerHTML = renderTeam(blue, 'blue');
           document.getElementById('orange-team').innerHTML = renderTeam(orange, 'orange');
           document.getElementById('center').innerHTML = renderCenter(board);
+
+          if (board.snapshotId && board.snapshotId !== lastSnapshotId) {
+            lastSnapshotId = board.snapshotId;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+            try {
+              await window.saveScoreboardScreenshot(board.snapshotId);
+            } catch (error) {
+              lastSnapshotId = '';
+            }
+          }
         } catch (error) {
-          document.getElementById('center').innerHTML = '<div class="mid-box"><div class="time">Error</div></div>';
+          document.getElementById('center').innerHTML = '<div class="center-message">Error loading scoreboard</div>';
         }
       }
 

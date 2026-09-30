@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
-	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -23,6 +22,8 @@ func NewClient(url string) *Client {
 }
 
 type Session struct {
+	SessionID        string   `json:"sessionid,omitempty"`
+	MatchType        string   `json:"match_type,omitempty"`
 	GameState        string   `json:"game_status,omitempty"`
 	ClockDisplay     string   `json:"game_clock_display,omitempty"`
 	BluePoints       int      `json:"blue_points,omitempty"`
@@ -53,40 +54,16 @@ type Player struct {
 	Stats    map[string]float64 `json:"stats,omitempty"`
 }
 
-func findExistingFixture(paths ...string) string {
-	for _, candidate := range paths {
-		if _, err := os.Stat(candidate); err == nil {
-			return candidate
-		}
+func ParseSession(data []byte) (Session, error) {
+	data = bytes.TrimPrefix(data, []byte{0xEF, 0xBB, 0xBF})
+	var session Session
+	if err := json.Unmarshal(data, &session); err != nil {
+		return Session{}, err
 	}
-	if wd, err := os.Getwd(); err == nil {
-		for _, candidate := range []string{
-			filepath.Join(wd, "..", "..", "testdata", "echo_session.json"),
-			filepath.Join(wd, "..", "testdata", "echo_session.json"),
-			filepath.Join(wd, "testdata", "echo_session.json"),
-		} {
-			if _, err := os.Stat(candidate); err == nil {
-				return candidate
-			}
-		}
-	}
-	return ""
+	return session, nil
 }
 
 func (c *Client) Fetch() (Session, error) {
-	if fixture := findExistingFixture("testdata/echo_session.json", "../../testdata/echo_session.json"); fixture != "" {
-		data, err := os.ReadFile(fixture)
-		if err != nil {
-			return Session{}, err
-		}
-		data = bytes.TrimPrefix(data, []byte{0xEF, 0xBB, 0xBF})
-		var session Session
-		if err := json.Unmarshal(data, &session); err != nil {
-			return Session{}, err
-		}
-		return session, nil
-	}
-
 	resp, err := c.HTTPClient.Get(c.URL)
 	if err != nil {
 		return Session{}, err
@@ -97,9 +74,9 @@ func (c *Client) Fetch() (Session, error) {
 		return Session{}, fmt.Errorf("session endpoint returned %s", resp.Status)
 	}
 
-	var session Session
-	if err := json.NewDecoder(resp.Body).Decode(&session); err != nil {
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
 		return Session{}, err
 	}
-	return session, nil
+	return ParseSession(data)
 }
