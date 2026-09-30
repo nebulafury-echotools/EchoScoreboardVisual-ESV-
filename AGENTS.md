@@ -3,6 +3,7 @@
 A small scoreboard for Echo VR that shows the live score, player usernames, and MVP-style
 stats, refreshed every 5 seconds. Built for its owner and one friend, not for distribution.
 
+
 ## Agent operating rule
 
 - Always give a single-paragraph plan before making changes.
@@ -41,6 +42,13 @@ write parsing tests against those files.
    `testdata/`, and write down in this file what exists. Stats like MVP percentages may come
    only from Spark, or may have to be computed from the Echo API. Decide that from the
    samples, not before.
+3. **MVP** (known, from dad, 2026-09-30): the in-match MVP is **the player with the highest
+   point total of awards**. The awards and their point values are defined in Echo's
+   `r14/multiplayer/player_rewards.json`. Up to 3 awards are displayed, plus MVP, and there
+   is at least one unused award. Compute each player's award points live from the per-player
+   `stats` block in `/session` (points, goals, assists, saves, stuns, steals, passes,
+   catches, blocks, interceptions, shots_taken, possession_time), using the thresholds and
+   points from that file. Don't make up weights.
 
 ## Layout
 
@@ -67,7 +75,7 @@ testdata/                # real saved responses: echo_session.json, spark_*.json
 ```
 go test ./...                                                  # parsing tests against testdata/
 go run ./cmd/scoreboard                                        # run locally
-GOOS=windows GOARCH=amd64 go build -o builds/scoreboard.exe ./cmd/scoreboard   # the .exe
+GOOS=windows GOARCH=amd64 go build -o scoreboard.exe ./cmd/scoreboard   # the .exe
 ```
 
 ## Done means
