@@ -14,13 +14,18 @@ import (
 )
 
 type BoardPoller struct {
-	mu      sync.RWMutex
-	latest  board.Board
-	staleAt time.Time
+	mu          sync.RWMutex
+	latest      board.Board
+	staleAt     time.Time
+	projectRoot string
 }
 
 func main() {
-	poller := NewBoardPoller()
+	projectRoot, err := snapshot.ProjectRoot()
+	if err != nil {
+		log.Fatalf("find project directory for match data: %v", err)
+	}
+	poller := NewBoardPoller(projectRoot)
 	poller.Refresh()
 	go poller.Run()
 
@@ -52,8 +57,11 @@ func main() {
 	window.Run()
 }
 
-func NewBoardPoller() *BoardPoller {
-	return &BoardPoller{latest: board.Board{WaitingForMatch: true, Message: "waiting for match"}}
+func NewBoardPoller(projectRoot string) *BoardPoller {
+	return &BoardPoller{
+		latest:      board.Board{WaitingForMatch: true, Message: "waiting for match"},
+		projectRoot: projectRoot,
+	}
 }
 
 func (p *BoardPoller) Run() {
@@ -72,13 +80,16 @@ func (p *BoardPoller) Snapshot() board.Board {
 
 func (p *BoardPoller) Refresh() {
 	echoClient := echo.NewClient("http://127.0.0.1:6721/session")
-	session, err := echoClient.Fetch()
+	session, rawSession, err := echoClient.FetchWithRaw()
 	if err != nil {
 		p.mu.Lock()
 		p.latest = board.Board{WaitingForMatch: true, Message: "waiting for match"}
 		p.staleAt = time.Now()
 		p.mu.Unlock()
 		return
+	}
+	if err := echo.SaveSnapshot(p.projectRoot, rawSession); err != nil {
+		log.Printf("save populated Echo session snapshot: %v", err)
 	}
 
 	merged := board.Build(session)

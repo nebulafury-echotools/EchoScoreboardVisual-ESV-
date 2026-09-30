@@ -13,15 +13,15 @@ func TestBuildReturnsWaitingStateForEmptySession(t *testing.T) {
 	}
 }
 
-func TestBuildCalculatesMVPFromEchoArenaAwardMultipliers(t *testing.T) {
+func TestBuildMarksMVPPartialWhenCoreStatsAreMissing(t *testing.T) {
 	session := echo.Session{
 		MatchType: "Echo_Arena",
 		Teams: []echo.Team{
 			{Name: "BLUE TEAM", Players: []echo.Player{{Name: "BlueOne", Stats: map[string]float64{
-				"stuns": 2, "assists": 1, "threepointgoals": 1, "longestpossession": 2.5,
+				"points": 2, "assists": 1,
 			}}}},
 			{Name: "ORANGE TEAM", Players: []echo.Player{{Name: "OrangeOne", Stats: map[string]float64{
-				"goals": 2, "saves": 1,
+				"points": 1, "assists": 0,
 			}}}},
 		},
 	}
@@ -29,11 +29,11 @@ func TestBuildCalculatesMVPFromEchoArenaAwardMultipliers(t *testing.T) {
 	built := Build(session)
 	blue := built.Teams[0].Players[0]
 	orange := built.Teams[1].Players[0]
-	if blue.MVPScore != 100 {
-		t.Fatalf("expected BlueOne MVP score 100, got %v", blue.MVPScore)
+	if blue.MVPScore != 13 {
+		t.Fatalf("expected BlueOne partial MVP score 13, got %v", blue.MVPScore)
 	}
-	if orange.MVPScore != 70 {
-		t.Fatalf("expected OrangeOne MVP score 70, got %v", orange.MVPScore)
+	if orange.MVPScore != 5 {
+		t.Fatalf("expected OrangeOne partial MVP score 5, got %v", orange.MVPScore)
 	}
 	if !blue.IsMVP || orange.IsMVP {
 		t.Fatalf("expected BlueOne to be MVP only; blue=%v orange=%v", blue.IsMVP, orange.IsMVP)
@@ -46,15 +46,39 @@ func TestBuildCalculatesMVPFromEchoArenaAwardMultipliers(t *testing.T) {
 	}
 }
 
-func TestEchoArenaMVPScoreUsesEveryConfiguredMultiplier(t *testing.T) {
-	stats := map[string]float64{}
-	for _, award := range echoArenaAwardMultipliers {
-		stats[award.stat] = 1
+func TestBuildUsesOwnerMVPWeightsForScreenshotMatch(t *testing.T) {
+	session := echo.Session{
+		MatchType: "Echo_Arena",
+		Teams: []echo.Team{
+			{Name: "BLUE TEAM", Players: []echo.Player{{Name: "stardust", Stats: map[string]float64{
+				"points": 6, "assists": 1, "saves": 0,
+			}}}},
+			{Name: "ORANGE TEAM", Players: []echo.Player{
+				{Name: "Coastal", Stats: map[string]float64{"points": 2, "assists": 5, "saves": 0}},
+				{Name: "Aqua", Stats: map[string]float64{"points": 6, "assists": 0, "saves": 1}},
+			}},
+		},
 	}
 
-	score, complete := echoArenaMVPScore(stats)
-	if score != 449 {
-		t.Fatalf("expected all award multipliers to total 449, got %v", score)
+	built := Build(session)
+	if built.Teams[0].Players[0].MVPScore != 33 {
+		t.Fatalf("expected stardust score 33, got %v", built.Teams[0].Players[0].MVPScore)
+	}
+	if built.Teams[1].Players[0].MVPScore != 25 {
+		t.Fatalf("expected Coastal score 25, got %v", built.Teams[1].Players[0].MVPScore)
+	}
+	if built.Teams[1].Players[1].MVPScore != 32 {
+		t.Fatalf("expected Aqua score 32, got %v", built.Teams[1].Players[1].MVPScore)
+	}
+	if built.MVPName != "stardust" {
+		t.Fatalf("expected stardust to win MVP, got %q", built.MVPName)
+	}
+}
+
+func TestEchoArenaMVPScoreUsesSpecifiedWeights(t *testing.T) {
+	score, complete := echoArenaMVPScore(map[string]float64{"points": 2, "assists": 3, "saves": 4})
+	if score != 27 {
+		t.Fatalf("expected weighted score 27, got %v", score)
 	}
 	if !complete {
 		t.Fatal("expected complete stat set to produce a complete rating")

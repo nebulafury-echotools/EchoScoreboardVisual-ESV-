@@ -9,6 +9,7 @@
 
 # Machine-captured API samples can contain player and session identifiers
 /testdata/*.json
+/match-data/
 
 # Go test and profiling artifacts
 *.test

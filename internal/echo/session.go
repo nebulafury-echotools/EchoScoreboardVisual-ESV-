@@ -64,19 +64,28 @@ func ParseSession(data []byte) (Session, error) {
 }
 
 func (c *Client) Fetch() (Session, error) {
+	session, _, err := c.FetchWithRaw()
+	return session, err
+}
+
+func (c *Client) FetchWithRaw() (Session, []byte, error) {
 	resp, err := c.HTTPClient.Get(c.URL)
 	if err != nil {
-		return Session{}, err
+		return Session{}, nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return Session{}, fmt.Errorf("session endpoint returned %s", resp.Status)
+		return Session{}, nil, fmt.Errorf("session endpoint returned %s", resp.Status)
 	}
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return Session{}, err
+		return Session{}, nil, err
 	}
-	return ParseSession(data)
+	session, err := ParseSession(data)
+	if err != nil {
+		return Session{}, nil, err
+	}
+	return session, data, nil
 }

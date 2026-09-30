@@ -22,3 +22,12 @@ func projectRoot(executablePath, workingDirectory string) string {
 	}
 	return workingDirectory
 }
+
+func ProjectRoot() (string, error) {
+	executablePath, _ := os.Executable()
+	workingDirectory, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	return projectRoot(executablePath, workingDirectory), nil
+}
