@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echo Scoreboard</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #101a2b;
+        --line: rgba(255,255,255,0.12);
+        --blue: #2f7df6;
+        --orange: #f59e0b;
+        --text: #edf3ff;
+        --muted: #b7c6dc;
+        --score: #f8fafc;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", Tahoma, sans-serif;
+      }
+      body {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+      }
+      #app {
+        width: min(100vw, 1100px);
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 1fr auto 1fr;
+        gap: 10px;
+        padding: 12px;
+      }
+      .team-panel {
+        background: rgba(16, 26, 43, 0.94);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 8px;
+      }
+      .team-panel.blue {
+        background: linear-gradient(180deg, rgba(47,125,246,0.20), rgba(16,26,43,0.95));
+      }
+      .team-panel.orange {
+        background: linear-gradient(180deg, rgba(245,158,11,0.18), rgba(16,26,43,0.95));
+      }
+      .team-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px 8px 8px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        font-size: clamp(12px, 1.2vw, 20px);
+      }
+      .team-header .tag {
+        color: var(--muted);
+        opacity: .9;
+      }
+      .players {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .player {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 150px;
+      }
+      .player-name {
+        min-height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: clamp(11px, 1vw, 16px);
+        font-weight: 700;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .stat {
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 7px;
+        background: rgba(255,255,255,0.03);
+        padding: 4px 3px;
+        text-align: center;
+      }
+      .stat-label {
+        display: block;
+        font-size: 9px;
+        letter-spacing: .08em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .stat-value {
+        display: block;
+        margin-top: 2px;
+        font-size: clamp(11px, 1.2vw, 16px);
+        font-weight: 800;
+      }
+      .center-panel {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 18px;
+        padding: 6px 10px;
+        min-height: 120px;
+        background: rgba(16, 26, 43, 0.96);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .score-block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-weight: 900;
+      }
+      .score-block .side {
+        min-width: 82px;
+        text-align: center;
+        font-size: clamp(22px, 3.2vw, 52px);
+        line-height: 1;
+      }
+      .score-block .side.blue { color: var(--blue); }
+      .score-block .side.orange { color: var(--orange); }
+      .score-separator {
+        font-size: clamp(24px, 3vw, 40px);
+        color: var(--muted);
+      }
+      .mid-box {
+        text-align: center;
+      }
+      .time {
+        font-size: clamp(18px, 2.2vw, 32px);
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        color: var(--score);
+      }
+      .rounds {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: clamp(12px, 1vw, 18px);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .status {
+        text-align: center;
+        color: var(--muted);
+        font-size: clamp(11px, 1vw, 14px);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .status.game-over {
+        color: #ffd7d7;
+        font-weight: 800;
+      }
+      @media (max-width: 760px) {
+        .players { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .center-panel { grid-template-columns: 1fr; }
+        .score-block { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="blue-team" class="team-panel blue"></div>
+      <div id="center" class="center-panel"></div>
+      <div id="orange-team" class="team-panel orange"></div>
+    </div>
+
+    <script>
+      function formatStatNumber(value) {
+        const num = Number(value ?? 0);
+        if (!Number.isFinite(num)) return 0;
+        return Math.round(num);
+      }
+
+      function formatMvp(value) {
+        const num = Number(value ?? 0);
+        if (!Number.isFinite(num) || num <= 0) return '—';
+        return Math.round(num) + '%';
+      }
+
+      function shortName(name) {
+        const base = (name || 'Player').trim();
+        if (base.length <= 12) return base;
+        return base.slice(0, 10) + '…';
+      }
+
+      function buildPlayerCard(player) {
+        const stats = player.stats || {};
+        const p = formatStatNumber(stats.points);
+        const a = formatStatNumber(stats.assists);
+        const s = formatStatNumber(stats.saves);
+        const t = formatStatNumber(stats.stuns);
+        const ping = formatStatNumber(stats.ping ?? player.ping ?? 0);
+        const mvp = formatMvp(stats.mvp ?? player.mvp);
+
+        return `
+          <div class="player">
+            <div class="player-name">${shortName(player.name || player.username || 'Player')}</div>
+            <div class="stats">
+              <div class="stat"><span class="stat-label">PTS</span><span class="stat-value">${p}</span></div>
+              <div class="stat"><span class="stat-label">AST</span><span class="stat-value">${a}</span></div>
+              <div class="stat"><span class="stat-label">SVS</span><span class="stat-value">${s}</span></div>
+              <div class="stat"><span class="stat-label">STN</span><span class="stat-value">${t}</span></div>
+              <div class="stat"><span class="stat-label">PING</span><span class="stat-value">${ping}</span></div>
+              <div class="stat"><span class="stat-label">MVP</span><span class="stat-value">${mvp}</span></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderTeam(team, side) {
+        const players = Array.isArray(team.players) ? team.players.slice(0, 4) : [];
+        const pad = Array.from({ length: Math.max(0, 4 - players.length) }, () => '<div class="player"><div class="player-name">—</div><div class="stats"><div class="stat"><span class="stat-label">PTS</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">AST</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">SVS</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">STN</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">PING</span><span class="stat-value">0</span></div><div class="stat"><span class="stat-label">MVP</span><span class="stat-value">—</span></div></div></div>');
+
+        return `
+          <div class="team-header">
+            <span>${side === 'blue' ? 'Blue' : 'Orange'}</span>
+            <span class="tag">${team.name || (side === 'blue' ? 'Blue Team' : 'Orange Team')}</span>
+          </div>
+          <div class="players">
+            ${players.map(buildPlayerCard).join('')}${pad.join('')}
+          </div>
+        `;
+      }
+
+      function renderCenter(board) {
+        const time = board.timeLeft || '00:00.00';
+        const scoreBlue = Number(board.score?.blue ?? 0);
+        const scoreOrange = Number(board.score?.orange ?? 0);
+        const roundBlue = Number(board.roundScores?.blue ?? 0);
+        const roundOrange = Number(board.roundScores?.orange ?? 0);
+        const isGameOver = !!board.gameOver || time === '00:00.00' || time === '00:00.000' || (board.gameStatus || '').toLowerCase().includes('post');
+        const timeText = isGameOver ? 'Game Over' : time;
+        const statusText = isGameOver ? 'Game Over' : (board.staleSince ? `stale since ${board.staleSince}` : 'live');
+
+        return `
+          <div class="score-block">
+            <div class="side blue">${scoreBlue}</div>
+            <div class="score-separator">:</div>
+            <div class="side orange">${scoreOrange}</div>
+          </div>
+          <div class="mid-box">
+            <div class="time">${timeText}</div>
+            <div class="rounds">Rounds ${roundBlue} - ${roundOrange}</div>
+          </div>
+          <div class="status ${isGameOver ? 'game-over' : ''}">${statusText}</div>
+        `;
+      }
+
+      async function loadBoard() {
+        try {
+          const response = await fetch('/board.json', { cache: 'no-store' });
+          const board = await response.json();
+
+          if (board.waitingForMatch) {
+            document.getElementById('blue-team').innerHTML = '<div class="team-header"><span>Blue</span><span class="tag">Waiting</span></div>';
+            document.getElementById('orange-team').innerHTML = '<div class="team-header"><span>Orange</span><span class="tag">Waiting</span></div>';
+            document.getElementById('center').innerHTML = '<div class="mid-box"><div class="time">Waiting for match</div></div>';
+            return;
+          }
+
+          const teams = Array.isArray(board.teams) ? board.teams : [];
+          const blue = teams.find(team => (team.color || '').toLowerCase() === 'blue') || teams[0] || { name: 'Blue Team', color: 'blue', players: [] };
+          const orange = teams.find(team => (team.color || '').toLowerCase() === 'orange') || teams[1] || { name: 'Orange Team', color: 'orange', players: [] };
+
+          document.getElementById('blue-team').innerHTML = renderTeam(blue, 'blue');
+          document.getElementById('orange-team').innerHTML = renderTeam(orange, 'orange');
+          document.getElementById('center').innerHTML = renderCenter(board);
+        } catch (error) {
+          document.getElementById('center').innerHTML = '<div class="mid-box"><div class="time">Error</div></div>';
+        }
+      }
+
+      loadBoard();
+      setInterval(loadBoard, 5000);
+    </script>
+  </body>
+</html>

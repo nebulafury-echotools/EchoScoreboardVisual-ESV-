@@ -1,0 +1,1403 @@
+{
+  "disc": {
+    "position": [
+      -7.6090002,
+      -1.748,
+      -12.127001
+    ],
+    "forward": [
+      0.34800002,
+      0.37600002,
+      -0.85900003
+    ],
+    "left": [
+      -0.0020000001,
+      0.91600007,
+      0.40100002
+    ],
+    "up": [
+      0.93800002,
+      -0.13800001,
+      0.31900001
+    ],
+    "velocity": [
+      0.528,
+      -0.043000001,
+      -5.9960003
+    ],
+    "bounce_count": 0
+  },
+  "orange_team_restart_request": 0,
+  "sessionid": "3FF20B3A-687A-4A7C-B690-6A35C826D2A0",
+  "game_clock_display": "01:48.54",
+  "game_status": "playing",
+  "sessionip": "80.64.218.95",
+  "match_type": "Echo_Arena",
+  "map_name": "mpl_arena_a",
+  "right_shoulder_pressed2": 0.0,
+  "teams": [
+    {
+      "players": [
+        {
+          "name": "ly",
+          "rhand": {
+            "pos": [
+              -0.115,
+              1.2550001,
+              -6.1190004
+            ],
+            "forward": [
+              -0.032000002,
+              -0.42400002,
+              -0.90500003
+            ],
+            "left": [
+              -0.48400003,
+              -0.78600001,
+              0.38500002
+            ],
+            "up": [
+              -0.87500006,
+              0.45000002,
+              -0.18000001
+            ]
+          },
+          "playerid": 0,
+          "userid": 5863906067023329,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 44,
+          "stunned": false,
+          "ping": 29,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              -0.28200001,
+              1.899,
+              -5.5160003
+            ],
+            "forward": [
+              -0.76800001,
+              -0.112,
+              -0.63100004
+            ],
+            "left": [
+              -0.62900001,
+              -0.050000001,
+              0.77500004
+            ],
+            "up": [
+              -0.11800001,
+              0.99200004,
+              -0.032000002
+            ]
+          },
+          "body": {
+            "position": [
+              -0.28200001,
+              1.899,
+              -5.5160003
+            ],
+            "forward": [
+              -0.81500006,
+              -0.0020000001,
+              -0.57900006
+            ],
+            "left": [
+              -0.57900006,
+              -0.001,
+              0.81500006
+            ],
+            "up": [
+              -0.0020000001,
+              1.0,
+              -0.001
+            ]
+          },
+          "holding_right": "geo",
+          "lhand": {
+            "pos": [
+              -0.35200003,
+              0.92000002,
+              -5.4650002
+            ],
+            "forward": [
+              -0.44600001,
+              -0.81100005,
+              -0.37900001
+            ],
+            "left": [
+              -0.82100004,
+              0.53900003,
+              -0.186
+            ],
+            "up": [
+              0.35500002,
+              0.22800002,
+              -0.90700006
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            -0.92500007,
+            2.628,
+            -0.92400002
+          ],
+          "stats": {
+            "possession_time": 13.624056,
+            "points": 5,
+            "saves": 0,
+            "goals": 2,
+            "stuns": 0,
+            "passes": 1,
+            "catches": 2,
+            "steals": 1,
+            "blocks": 0,
+            "interceptions": 0,
+            "assists": 0,
+            "shots_taken": 2
+          }
+        },
+        {
+          "name": "THE CHOSEN",
+          "rhand": {
+            "pos": [
+              -4.8850002,
+              -0.98100007,
+              -9.5710001
+            ],
+            "forward": [
+              -0.51500005,
+              -0.48000002,
+              -0.71000004
+            ],
+            "left": [
+              -0.42300001,
+              -0.57800001,
+              0.69800001
+            ],
+            "up": [
+              -0.74600005,
+              0.66000003,
+              0.095000006
+            ]
+          },
+          "playerid": 3,
+          "userid": 5219961868038135,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 50,
+          "stunned": false,
+          "ping": 128,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              -4.7690001,
+              -0.24000001,
+              -9.2900009
+            ],
+            "forward": [
+              -0.76500005,
+              -0.061000004,
+              -0.64100003
+            ],
+            "left": [
+              -0.64000005,
+              0.186,
+              0.74600005
+            ],
+            "up": [
+              0.074000001,
+              0.98100007,
+              -0.18100001
+            ]
+          },
+          "body": {
+            "position": [
+              -4.7690001,
+              -0.24000001,
+              -9.2900009
+            ],
+            "forward": [
+              -0.83900005,
+              0.001,
+              -0.54400003
+            ],
+            "left": [
+              -0.54400003,
+              0.0020000001,
+              0.83900005
+            ],
+            "up": [
+              0.0020000001,
+              1.0,
+              -0.001
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              -4.9240003,
+              -0.81400001,
+              -8.8190002
+            ],
+            "forward": [
+              -0.91400003,
+              -0.30500001,
+              -0.26700002
+            ],
+            "left": [
+              -0.31,
+              0.95000005,
+              -0.024
+            ],
+            "up": [
+              0.26100001,
+              0.060000002,
+              -0.96300006
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            1.7850001,
+            1.3390001,
+            -3.0450001
+          ],
+          "stats": {
+            "possession_time": 23.08803,
+            "points": 0,
+            "saves": 0,
+            "goals": 0,
+            "stuns": 4,
+            "passes": 3,
+            "catches": 2,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 1,
+            "assists": 0,
+            "shots_taken": 0
+          }
+        },
+        {
+          "name": "Tavian",
+          "rhand": {
+            "pos": [
+              0.027000001,
+              1.669,
+              -21.756001
+            ],
+            "forward": [
+              0.63600004,
+              -0.62,
+              -0.46100003
+            ],
+            "left": [
+              -0.74400002,
+              -0.33200002,
+              -0.58000004
+            ],
+            "up": [
+              0.20700002,
+              0.71100003,
+              -0.67200005
+            ]
+          },
+          "playerid": 6,
+          "userid": 5032390936863207,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 50,
+          "stunned": false,
+          "ping": 96,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              -0.36200002,
+              2.5470002,
+              -21.622002
+            ],
+            "forward": [
+              -0.022000002,
+              -0.273,
+              -0.96200007
+            ],
+            "left": [
+              -0.99900007,
+              0.031000001,
+              0.014
+            ],
+            "up": [
+              0.026000001,
+              0.96100003,
+              -0.27400002
+            ]
+          },
+          "body": {
+            "position": [
+              -0.36200002,
+              2.5470002,
+              -21.622002
+            ],
+            "forward": [
+              -0.068000004,
+              0.0,
+              -0.99800003
+            ],
+            "left": [
+              -0.99800003,
+              -0.0020000001,
+              0.068000004
+            ],
+            "up": [
+              -0.0020000001,
+              1.0,
+              0.0
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              -0.42000002,
+              1.6190001,
+              -21.604
+            ],
+            "forward": [
+              0.36000001,
+              0.050000001,
+              -0.93100005
+            ],
+            "left": [
+              -0.53000003,
+              0.83300006,
+              -0.16000001
+            ],
+            "up": [
+              0.76800001,
+              0.551,
+              0.32700002
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            0.040000003,
+            -0.81900007,
+            -8.0350008
+          ],
+          "stats": {
+            "possession_time": 17.524622,
+            "points": 0,
+            "saves": 0,
+            "goals": 0,
+            "stuns": 2,
+            "passes": 0,
+            "catches": 2,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 0,
+            "assists": 0,
+            "shots_taken": 1
+          }
+        },
+        {
+          "name": "Tao Fa-",
+          "rhand": {
+            "pos": [
+              -7.7960005,
+              -1.2650001,
+              -9.9870005
+            ],
+            "forward": [
+              0.597,
+              -0.80100006,
+              -0.045000002
+            ],
+            "left": [
+              -0.78400004,
+              -0.57100004,
+              -0.24300002
+            ],
+            "up": [
+              0.16900001,
+              0.18100001,
+              -0.96900004
+            ]
+          },
+          "playerid": 7,
+          "userid": 4235541399840781,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 50,
+          "stunned": false,
+          "ping": 102,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "8",
+          "possession": false,
+          "head": {
+            "position": [
+              -8.283,
+              -0.66000003,
+              -10.280001
+            ],
+            "forward": [
+              0.65900004,
+              -0.015000001,
+              -0.75200003
+            ],
+            "left": [
+              -0.71700001,
+              -0.31400001,
+              -0.62200004
+            ],
+            "up": [
+              -0.22700001,
+              0.94900006,
+              -0.21700001
+            ]
+          },
+          "body": {
+            "position": [
+              -8.283,
+              -0.66000003,
+              -10.280001
+            ],
+            "forward": [
+              0.62300003,
+              0.003,
+              -0.78200006
+            ],
+            "left": [
+              -0.76400006,
+              -0.215,
+              -0.60900003
+            ],
+            "up": [
+              -0.17,
+              0.97700006,
+              -0.13100001
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              -8.2220001,
+              -1.023,
+              -10.815001
+            ],
+            "forward": [
+              0.43700001,
+              0.081,
+              -0.89600003
+            ],
+            "left": [
+              -0.71800005,
+              0.63100004,
+              -0.29300001
+            ],
+            "up": [
+              0.54200006,
+              0.77200001,
+              0.33400002
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            3.0280001,
+            -1.3850001,
+            -4.4110003
+          ],
+          "stats": {
+            "possession_time": 33.168472,
+            "points": 0,
+            "saves": 1,
+            "goals": 0,
+            "stuns": 0,
+            "passes": 4,
+            "catches": 2,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 3,
+            "assists": 1,
+            "shots_taken": 2
+          }
+        }
+      ],
+      "team": "BLUE TEAM",
+      "possession": false,
+      "stats": {
+        "points": 5,
+        "possession_time": 87.405182,
+        "interceptions": 4,
+        "blocks": 0,
+        "steals": 1,
+        "catches": 8,
+        "passes": 8,
+        "saves": 1,
+        "goals": 2,
+        "stuns": 6,
+        "assists": 1,
+        "shots_taken": 5
+      }
+    },
+    {
+      "players": [
+        {
+          "name": "Mr.Bearshark",
+          "rhand": {
+            "pos": [
+              -0.35700002,
+              3.9880002,
+              -27.925001
+            ],
+            "forward": [
+              0.39400002,
+              0.31800002,
+              0.86200005
+            ],
+            "left": [
+              0.64200002,
+              -0.76700002,
+              -0.010000001
+            ],
+            "up": [
+              0.65800005,
+              0.55700004,
+              -0.50600004
+            ]
+          },
+          "playerid": 1,
+          "userid": 5663250943722970,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 19,
+          "stunned": false,
+          "ping": 120,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              -0.43000001,
+              4.5250001,
+              -28.042002
+            ],
+            "forward": [
+              -0.27100003,
+              -0.37,
+              0.88800007
+            ],
+            "left": [
+              0.95600003,
+              0.0060000001,
+              0.294
+            ],
+            "up": [
+              -0.11400001,
+              0.92900002,
+              0.35200003
+            ]
+          },
+          "body": {
+            "position": [
+              -0.43000001,
+              4.5250001,
+              -28.042002
+            ],
+            "forward": [
+              -0.26800001,
+              0.0020000001,
+              0.96300006
+            ],
+            "left": [
+              0.96300006,
+              0.0,
+              0.26800001
+            ],
+            "up": [
+              0.0,
+              1.0,
+              -0.0020000001
+            ]
+          },
+          "holding_right": "4",
+          "lhand": {
+            "pos": [
+              -0.30400002,
+              3.7940001,
+              -28.032001
+            ],
+            "forward": [
+              -0.18400002,
+              -0.24400002,
+              0.95200002
+            ],
+            "left": [
+              0.74600005,
+              0.597,
+              0.29700002
+            ],
+            "up": [
+              -0.64100003,
+              0.76400006,
+              0.072000004
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            -0.79100001,
+            -0.37400001,
+            -0.99800003
+          ],
+          "stats": {
+            "possession_time": 27.576813,
+            "points": 0,
+            "saves": 0,
+            "goals": 0,
+            "stuns": 5,
+            "passes": 1,
+            "catches": 0,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 3,
+            "assists": 0,
+            "shots_taken": 2
+          }
+        },
+        {
+          "name": "koldoars",
+          "rhand": {
+            "pos": [
+              -0.57800001,
+              3.2620001,
+              -27.610001
+            ],
+            "forward": [
+              -0.11700001,
+              -0.82600003,
+              0.551
+            ],
+            "left": [
+              0.97700006,
+              -0.19600001,
+              -0.086000003
+            ],
+            "up": [
+              0.17900001,
+              0.52900004,
+              0.83000004
+            ]
+          },
+          "playerid": 4,
+          "userid": 31529,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 35,
+          "stunned": false,
+          "ping": 130,
+          "packetlossratio": 0.0022172928,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              -0.44400004,
+              4.0480003,
+              -27.658001
+            ],
+            "forward": [
+              -0.23,
+              -0.38700002,
+              0.89300007
+            ],
+            "left": [
+              0.97300005,
+              -0.060000002,
+              0.22400001
+            ],
+            "up": [
+              -0.033,
+              0.92000002,
+              0.39000002
+            ]
+          },
+          "body": {
+            "position": [
+              -0.44400004,
+              4.0480003,
+              -27.658001
+            ],
+            "forward": [
+              -0.104,
+              0.0,
+              0.99500006
+            ],
+            "left": [
+              0.99500006,
+              -0.0020000001,
+              0.104
+            ],
+            "up": [
+              0.0020000001,
+              1.0,
+              0.0
+            ]
+          },
+          "holding_right": "geo",
+          "lhand": {
+            "pos": [
+              -0.35700002,
+              3.2450001,
+              -27.571001
+            ],
+            "forward": [
+              -0.20500001,
+              -0.91100007,
+              0.35700002
+            ],
+            "left": [
+              0.64900005,
+              0.14600001,
+              0.74600005
+            ],
+            "up": [
+              -0.73200005,
+              0.38500002,
+              0.56200004
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            0.0,
+            -0.036000002,
+            -0.047000002
+          ],
+          "stats": {
+            "possession_time": 13.526134,
+            "points": 0,
+            "saves": 0,
+            "goals": 0,
+            "stuns": 3,
+            "passes": 0,
+            "catches": 2,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 0,
+            "assists": 0,
+            "shots_taken": 0
+          }
+        },
+        {
+          "name": "k",
+          "rhand": {
+            "pos": [
+              2.8590002,
+              2.2460001,
+              -19.759001
+            ],
+            "forward": [
+              -0.25,
+              -0.95500004,
+              -0.16100001
+            ],
+            "left": [
+              -0.63900006,
+              0.038000003,
+              0.76900005
+            ],
+            "up": [
+              -0.72800004,
+              0.294,
+              -0.61900002
+            ]
+          },
+          "playerid": 5,
+          "userid": 3333887463400440,
+          "is_emote_playing": false,
+          "number": 0,
+          "level": 28,
+          "stunned": false,
+          "ping": 113,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              2.7320001,
+              3.1010001,
+              -19.582001
+            ],
+            "forward": [
+              -0.91200006,
+              -0.33900002,
+              0.23200001
+            ],
+            "left": [
+              0.29800001,
+              -0.15400001,
+              0.94200003
+            ],
+            "up": [
+              -0.28400001,
+              0.92800003,
+              0.24200001
+            ]
+          },
+          "body": {
+            "position": [
+              2.7320001,
+              3.1010001,
+              -19.582001
+            ],
+            "forward": [
+              -0.96100003,
+              0.0,
+              0.27700001
+            ],
+            "left": [
+              0.27700001,
+              0.0020000001,
+              0.96100003
+            ],
+            "up": [
+              -0.001,
+              1.0,
+              -0.0020000001
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              2.618,
+              2.2610002,
+              -19.493
+            ],
+            "forward": [
+              -0.96500003,
+              -0.22500001,
+              -0.134
+            ],
+            "left": [
+              -0.259,
+              0.73700005,
+              0.62400001
+            ],
+            "up": [
+              -0.042000003,
+              0.63700002,
+              -0.77000004
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            1.033,
+            0.052000001,
+            -9.8740005
+          ],
+          "stats": {
+            "possession_time": 17.402908,
+            "points": 0,
+            "saves": 1,
+            "goals": 0,
+            "stuns": 1,
+            "passes": 1,
+            "catches": 0,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 0,
+            "assists": 1,
+            "shots_taken": 0
+          }
+        },
+        {
+          "name": "yes",
+          "rhand": {
+            "pos": [
+              -7.4260001,
+              -1.6290001,
+              -12.622001
+            ],
+            "forward": [
+              0.18300001,
+              0.74100006,
+              -0.64600003
+            ],
+            "left": [
+              -0.134,
+              0.67000002,
+              0.73000002
+            ],
+            "up": [
+              0.97400004,
+              -0.047000002,
+              0.22200002
+            ]
+          },
+          "playerid": 8,
+          "userid": 4935724796483846,
+          "is_emote_playing": false,
+          "number": 1,
+          "level": 50,
+          "stunned": false,
+          "ping": 126,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": true,
+          "head": {
+            "position": [
+              -7.3980002,
+              -1.2600001,
+              -12.112
+            ],
+            "forward": [
+              0.27800003,
+              0.22100002,
+              -0.93500006
+            ],
+            "left": [
+              0.96000004,
+              -0.030000001,
+              0.27900001
+            ],
+            "up": [
+              0.034000002,
+              -0.97500002,
+              -0.22100002
+            ]
+          },
+          "body": {
+            "position": [
+              -7.3980002,
+              -1.2600001,
+              -12.112
+            ],
+            "forward": [
+              0.38100001,
+              0.013,
+              -0.92500007
+            ],
+            "left": [
+              0.92500007,
+              -0.020000001,
+              0.38000003
+            ],
+            "up": [
+              -0.013,
+              -1.0,
+              -0.019000001
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              -7.3530002,
+              -0.49500003,
+              -11.985001
+            ],
+            "forward": [
+              0.22000001,
+              0.79900002,
+              -0.56
+            ],
+            "left": [
+              0.97200006,
+              -0.132,
+              0.193
+            ],
+            "up": [
+              0.080000006,
+              -0.58700001,
+              -0.80500007
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            0.34900001,
+            -0.15700001,
+            -4.691
+          ],
+          "stats": {
+            "possession_time": 21.794245,
+            "points": 3,
+            "saves": 0,
+            "goals": 1,
+            "stuns": 2,
+            "passes": 1,
+            "catches": 1,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 3,
+            "assists": 0,
+            "shots_taken": 1
+          }
+        }
+      ],
+      "team": "ORANGE TEAM",
+      "possession": true,
+      "stats": {
+        "points": 3,
+        "possession_time": 80.300102,
+        "interceptions": 6,
+        "blocks": 0,
+        "steals": 0,
+        "catches": 3,
+        "passes": 3,
+        "saves": 1,
+        "goals": 1,
+        "stuns": 11,
+        "assists": 1,
+        "shots_taken": 3
+      }
+    },
+    {
+      "players": [
+        {
+          "name": "stardust",
+          "rhand": {
+            "pos": [
+              1.7500001,
+              0.0,
+              -9.6200008
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "playerid": 9,
+          "userid": 733,
+          "is_emote_playing": false,
+          "number": 1,
+          "level": 50,
+          "stunned": false,
+          "ping": 130,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              2.0,
+              0.0,
+              -10.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "body": {
+            "position": [
+              2.0,
+              0.0,
+              -10.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              2.25,
+              -0.25,
+              -10.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "possession_time": 0.0,
+            "points": 0,
+            "saves": 0,
+            "goals": 0,
+            "stuns": 0,
+            "passes": 0,
+            "catches": 0,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 0,
+            "assists": 0,
+            "shots_taken": 0
+          }
+        },
+        {
+          "name": "trollollolipop",
+          "rhand": {
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "playerid": 2,
+          "userid": 2673227020928831847,
+          "is_emote_playing": false,
+          "number": 1,
+          "level": 1,
+          "stunned": false,
+          "ping": 129,
+          "packetlossratio": 0.0,
+          "invulnerable": false,
+          "holding_left": "none",
+          "possession": false,
+          "head": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "body": {
+            "position": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "holding_right": "none",
+          "lhand": {
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "forward": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "left": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "blocking": false,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "stats": {
+            "possession_time": 0.0,
+            "points": 0,
+            "saves": 0,
+            "goals": 0,
+            "stuns": 0,
+            "passes": 0,
+            "catches": 0,
+            "steals": 0,
+            "blocks": 0,
+            "interceptions": 0,
+            "assists": 0,
+            "shots_taken": 0
+          }
+        }
+      ],
+      "team": "SPECTATORS",
+      "possession": false,
+      "stats": {
+        "points": 0,
+        "possession_time": 0.0,
+        "interceptions": 0,
+        "blocks": 0,
+        "steals": 0,
+        "catches": 0,
+        "passes": 0,
+        "saves": 0,
+        "goals": 0,
+        "stuns": 0,
+        "assists": 0,
+        "shots_taken": 0
+      }
+    }
+  ],
+  "blue_round_score": 0,
+  "orange_points": 3,
+  "player": {
+    "vr_left": [
+      -0.546,
+      0.0,
+      0.83800006
+    ],
+    "vr_position": [
+      2.1800001,
+      1.628,
+      -4.1400003
+    ],
+    "vr_forward": [
+      -0.83800006,
+      -0.0020000001,
+      -0.546
+    ],
+    "vr_up": [
+      -0.0020000001,
+      1.0,
+      -0.001
+    ]
+  },
+  "private_match": false,
+  "blue_team_restart_request": 0,
+  "tournament_match": false,
+  "orange_round_score": 0,
+  "rules_changed_by": "[INVALID]",
+  "total_round_count": 1,
+  "left_shoulder_pressed2": 0.0,
+  "left_shoulder_pressed": 0.0,
+  "pause": {
+    "paused_state": "unpaused",
+    "unpaused_team": "none",
+    "paused_requested_team": "none",
+    "unpaused_timer": 0.0,
+    "paused_timer": 0.0
+  },
+  "right_shoulder_pressed": 0.0,
+  "blue_points": 5,
+  "last_throw": {
+    "arm_speed": 0.0,
+    "total_speed": 0.0,
+    "off_axis_spin_deg": 0.0,
+    "wrist_throw_penalty": 0.0,
+    "rot_per_sec": 0.0,
+    "pot_speed_from_rot": 0.0,
+    "speed_from_arm": 0.0,
+    "speed_from_movement": 0.0,
+    "speed_from_wrist": 0.0,
+    "wrist_align_to_throw_deg": 0.0,
+    "throw_align_to_movement_deg": 0.0,
+    "off_axis_penalty": 0.0,
+    "throw_move_penalty": 0.0
+  },
+  "client_name": "stardust",
+  "game_clock": 108.54189,
+  "possession": [
+    1,
+    3
+  ],
+  "last_score": {
+    "disc_speed": -6394800.0,
+    "team": "orange",
+    "goal_type": "[NO GOAL]",
+    "point_amount": 0,
+    "distance_thrown": 0.0,
+    "person_scored": "[INVALID]",
+    "assist_scored": "[INVALID]"
+  },
+  "rules_changed_at": 0,
+  "err_code": 0
+}
