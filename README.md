@@ -4,7 +4,7 @@ A standalone Windows scoreboard for Echo VR. Launch the executable to open its d
 
 Player panels show PTS, AST, SVS, STN, PING, and the calculated MVP score. Individual award titles are not displayed. For `Echo_Arena`, the MVP score is the sum of each award stat multiplied by its configured multiplier from Echo's `r14/multiplayer/player_rewards.json`. The highest score is marked MVP. A `~` prefix means one or more required stats were absent from `/session`, so the rating is partial. Outside `Echo_Arena`, MVP displays as `N/A`.
 
-At round or match end, the app saves one PNG of its scoreboard window for that end event to `%LOCALAPPDATA%\EchoScoreboardVisual\screenshots`.
+At round or match end, the app saves one PNG of its scoreboard window for that end event to the project's `screenshots` folder. Filenames use a fixed EST (UTC−5) timestamp.
 
 ## Requirements
 

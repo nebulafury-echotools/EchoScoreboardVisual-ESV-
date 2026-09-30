@@ -10,9 +10,15 @@ import (
 	"time"
 )
 
+var easternStandardTime = time.FixedZone("EST", -5*60*60)
+
+func estTimestamp(now time.Time) string {
+	return now.In(easternStandardTime).Format("20060102_150405")
+}
+
 func writePNG(imageData image.Image, eventID, directory string) (string, error) {
 	digest := sha256.Sum256([]byte(eventID))
-	name := "scoreboard_" + time.Now().Format("20060102_150405") + "_" + hex.EncodeToString(digest[:4]) + ".png"
+	name := "scoreboard_" + estTimestamp(time.Now()) + "_EST_" + hex.EncodeToString(digest[:4]) + ".png"
 	path := filepath.Join(directory, name)
 	file, err := os.Create(path)
 	if err != nil {

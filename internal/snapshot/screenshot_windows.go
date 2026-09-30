@@ -54,14 +54,16 @@ func (r *Recorder) Save(window unsafe.Pointer, eventID string) (string, error) {
 		return "", err
 	}
 
-	baseDirectory := os.Getenv("LOCALAPPDATA")
-	if baseDirectory == "" {
-		baseDirectory, err = os.UserConfigDir()
-		if err != nil {
-			return "", err
-		}
+	executablePath, _ := os.Executable()
+	workingDirectory, err := os.Getwd()
+	if err != nil {
+		return "", err
 	}
-	directory := filepath.Join(baseDirectory, "EchoScoreboardVisual", "screenshots")
+	root := projectRoot(executablePath, workingDirectory)
+	if root == "" {
+		return "", syscall.EINVAL
+	}
+	directory := filepath.Join(root, "screenshots")
 	if err := os.MkdirAll(directory, 0o700); err != nil {
 		return "", err
 	}

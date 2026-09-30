@@ -58,7 +58,8 @@ testdata/                # saved Echo response used by parser tests
 - Poll Echo every 5 seconds, not faster.
 - Every displayed number traces to a field in a saved `testdata/` sample. If a stat can't
   be traced, mark MVP as partial rather than inventing values.
-- Save one scoreboard PNG per round or match-end event under the user's local AppData.
+- Save one scoreboard PNG per round or match-end event under the project `screenshots/`
+  folder, with a fixed EST timestamp in its filename.
 - Keep it small. No database, no accounts, no cloud.
 
 ## Commands
